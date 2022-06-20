@@ -74,8 +74,8 @@ p > a:first-of-type {
     <canvas id="canvas-dots"></canvas>
 
     <div>
-      <video autoplay muted id="myVideo">
-        <source src="https://player.vimeo.com/video/722153068" type="video/mp4">
+      <video crossorigin="anonymous" autoplay muted id="myVideo">
+        <source src="./media/video5.mp4" type="video/mp4">
       </video>
     </div>
     
@@ -85,12 +85,14 @@ p > a:first-of-type {
         var audio2 = new Audio('https://github.com/karthi7/hbdJeeva/blob/main/js-cound-downhbd2.mp3');
         document.getElementById('myVideo').addEventListener('ended',myHandler,false);
         function myHandler(e) {
-        // What you want to do after the event
+          // What you want to do after the event
           document.getElementById('myVideo').style.display = 'none';
           audio1.play();
           loadAnimation();
         }
-        //document.addEventListener('DOMContentLoaded', loadAnimation);
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('myVideo').play();
+        });
 
         function loadAnimation() {
             /*
