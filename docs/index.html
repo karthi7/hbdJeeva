@@ -238,6 +238,9 @@ p > a:first-of-type {
                                 audio1.pause();
                                 audio2.play();
                                 initFramework();
+                                setTimeout(time => {
+                                  window.parent.postMessage("FrameLoaded", '*');
+                                },3000);
                             },2500);
                         }
                         
@@ -789,7 +792,7 @@ function anim(){
   }
   
   ctx.translate( -hw, -hh );
-  
+ 
   if( done )
     for( var l = 0; l < letters.length; ++l )
       letters[ l ].reset();
