@@ -620,11 +620,13 @@ p > a:first-of-type {
         document.addEventListener('DOMContentLoaded', function() {
           console.log('Video play');
           setTimeout(time => {
-            var videoPlay = document.getElementById('myVideo').play();
-            videoPlay.volume = 1;
+            var videoPlay = document.getElementById('myVideo')
+            videoPlay.volume = 1.0;
+            videoPlay.play();
             if (videoPlay!== undefined) {
                 videoPlay.then(_ => {
                     // autoplay starts!
+                    videoPlay.volume = 1.0;
                     videoPlay.play();
                 }).catch(error => {
                   //show error
