@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HBDJeeva</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/TweenMax.min.js" type="text/javascript"></script>
+  <style>
+      @import url(https://fonts.googleapis.com/css?family=Lato:900);
+
+        body {
+            background-color: #18191A;
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #canvas-number {
+            width: 1200px;
+            height: 600px;
+        }
+
+        #canvas-wish {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+p {
+  margin: 0 0;
+  position: absolute;
+  font: 16px Verdana;
+  color: #eee;
+  height: 25px;
+  top: calc( 100vh - 30px );
+  text-shadow: 0 0 2px white;
+}
+p a {
+  text-decoration: none;
+  color: #aaa;
+}
+span {
+  font-size: 11px;
+}
+p > a:first-of-type {
+  font-size: 20px;
+}
+
+#bgVideo {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+
+  </style>
+</head>
+<body>
+
+    <canvas id="canvas-number"></canvas>
+    <canvas id="canvas-wish"></canvas>
+    <canvas id="canvas-dots"></canvas>
+
+    <div>
+      <video autoplay muted id="myVideo">
+        <source src="./v.mp4" type="video/mp4">
+      </video>
+    </div>
+    
+    
+    <script>
+        var audio1 = new Audio('./hbd1.mp3');
+        var audio2 = new Audio('./hbd2.mp3');
+        document.getElementById('myVideo').addEventListener('ended',myHandler,false);
+        function myHandler(e) {
+        // What you want to do after the event
+          document.getElementById('myVideo').style.display = 'none';
+          audio1.play();
+          loadAnimation();
+        }
+        //document.addEventListener('DOMContentLoaded', loadAnimation);
+
+        function loadAnimation() {
+            /*
+            Desc: Define inital variables
+            */
+                    var numberStage,
+                            numberStageCtx,
+                            numberStageWidth = 680,
+                            numberStageHeight = 420,
+                            numberOffsetX,
+                            numberOffsetY,
+                            
+                            stage,
+                            stageCtx,
+                            stageWidth   = window.innerWidth,
+                            stageHeight  = window.innerHeight,
+                            stageCenterX = stageWidth/2,
+                            stageCenterY = stageHeight/2,
+                            
+                            countdownFrom = 2,
+                            countdownTimer = 2200,
+                            countdownRunning = true,
+                            
+                            number,
+                            dots = [],
+                            numberPixelCoordinates,
+                            circleRadius = 2,
+                            colors = ['61, 207, 236', '255, 244, 174', '255, 211, 218', '151, 211, 226'];
+                            words = ["A","A","V","E","E","J"];
+                           
+
+                    /*
+                    Desc: Init canvases & Number text
+                    */
+                    function init() {
+
+                                // Init stage which will have numbers
+                                numberStage = document.getElementById("canvas-number");
+                                numberStageCtx = numberStage.getContext('2d');
+                                // Set the canvas to width and height of the window
+                                numberStage.width = numberStageWidth;
+                                numberStage.height = numberStageHeight;
+                                
+                                // Init Stage which will have dots
+                                stage = document.getElementById("canvas-dots");
+                                stageCtx = stage.getContext('2d');
+                                stage.width = stageWidth;
+                                stage.height = stageHeight;
+                        
+                                // Create offset so text appears in middle of screen
+                                numberOffsetX = (stageWidth - numberStageWidth) / 2;
+                                numberOffsetY = (stageHeight - numberStageHeight) / 2;
+                    }
+
+                    init();
+
+
+                    /*
+                    Desc: Dot object
+                    */
+                    function Dot(x, y, color, alpha) {
+                        
+                        var _this = this;
+                        
+                        _this.x = x;
+                        _this.y = y;
+                        _this.color = color;
+                        _this.alpha = alpha;
+                        
+                        this.draw = function() {
+                            stageCtx.beginPath();
+                            stageCtx.arc(_this.x, _this.y, circleRadius, 0, 2*Math.PI, false);
+                            stageCtx.fillStyle = 'rgba(' + _this.color + ', ' + _this.alpha + ')';
+                            stageCtx.fill();
+                        }
+                        
+                    }
+
+                    /*
+                    Desc: Create a certain amount of dots
+                    */
+                    for (var i = 0; i < 2240; i++) {
+                        
+                        // Create a dot
+                        var dot = new Dot(randomNumber(0, stageWidth), randomNumber(0, stageHeight), colors[randomNumber(1, colors.length)], .3);
+                        
+                        // Push to into an array of dots
+                        dots.push(dot);
+                        
+                        // Animate dots
+                        tweenDots(dot, '', 'space');	
+                    }
+
+
+                    /*
+                    Desc: Countdown
+                    */
+                    function countdown() {
+
+                        // Send number to be drawn
+                        drawNumber(countdownFrom.toString());
+
+                        // When we hit zero stop countdown
+                        if (countdownFrom === 0) {
+                            countdownRunning = false;
+                            // Now that countdowns finised show the text Go
+                            drawNumber('JK');
+                            setTimeout(time => {
+                                audio1.pause();
+                                audio2.play();
+                                initFramework();
+                            },2500);
+                        }
+                        
+                        // Decrement number down
+                        countdownFrom--;
+                    }
+                    countdown();
+
+
+                    /*
+                    Desc: Redraw loops
+                    */
+                    function loop() {
+                        
+                        stageCtx.clearRect(0,0,stageWidth, stageHeight);
+                        
+                        for(var i = 0; i < dots.length; i++) {
+                        dots[i].draw(stageCtx);
+                    }
+                        
+                        requestAnimationFrame(loop);
+                    }
+
+                    loop();
+
+
+                    /*
+                    Desc: Draw number
+                    */
+                    function drawNumber(num) {
+                        
+                            // Create a number on a seperate canvas
+                            // Use a seperate canvas thats smaller so we have less data to loop over when using getImagedata()
+                            
+                            //	Clear stage of previous numbers
+                            numberStageCtx.clearRect(0,0,numberStageWidth, numberStageHeight);
+                        
+                            numberStageCtx.fillStyle = "#18191A";
+                            numberStageCtx.textAlign = 'center';
+                            numberStageCtx.font = "bold 418px Lato";
+                            if(num === "JK") {
+                                numberStageCtx.fillText(num, 340, 400);
+                            }
+                            else {
+                                numberStageCtx.fillText(words[num], 340, 400);
+                            }
+                        
+                            var ctx = document.getElementById('canvas-number').getContext('2d');
+                                
+                                // getImageData(x, y, width, height)
+                                // note: is an exspenisve function, so make sure canvas is small as possible for what you grab
+                                // Returns 1 Dimensional array of pixel color value chanels
+                                // Red, blue, green, alpha chanel of single pixel
+                            // First chanel is red
+                                var imageData = ctx.getImageData(0,0,numberStageWidth,numberStageHeight).data;
+
+                                // Clear number coordinated
+                                numberPixelCoordinates = [];
+
+                                // i is equal to total image data(eg: 480,000)
+                            // run while i is greater or equal to 0
+                            // every time we run it minus 4 from i. Do this because each pixel has 4 chanels & we are only interested in individual pixels 
+                                for (var i = imageData.length; i >= 0; i -= 4) {
+
+                                            // If not an empty pixel
+                                            if (imageData[i] !== 0) {
+                                                
+                                                    // i represents the position in the array a red pixel was found
+
+                                                    // (i / 4 ) and percentage by width of canvas
+                                                // Need to divide i by 4 because it has 4 values and you need its orginal position
+                                                // Then you need to percentage it by the width(600) because each row contains 600 pixels and you need its relative position in that row
+                                                    var x = (i / 4) % numberStageWidth;
+                                                
+                                                    // (i divide by width) then divide by 4
+                                                    // Divide by width(600) first so you get the rows of pixels that make up the canvas. Then divide by 4 to get its postion within the row
+                                                    var y = Math.floor(Math.floor(i/numberStageWidth)/4);
+
+                                                    // If position exists and number is divisble by circle plus a pixel gap then add cordinates to array. So circles do not overlap
+                                                    if((x && x%(circleRadius * 2 + 3) == 0) && (y && y%(circleRadius * 2 + 3) == 0)) {																															
+                                                            // Push object to numberPixels array with x and y coordinates
+                                                            numberPixelCoordinates.push({x: x, y: y});
+                                                        
+                                        }
+
+                                            }
+                                }
+                        
+                                formNumber();
+
+                    }
+
+
+                    /*
+                    Desc: Form number
+                    */
+                    function formNumber() {
+                        
+                        for (var i = 0; i < numberPixelCoordinates.length; i++) {
+                            
+                            // Loop out as many coordionates as we need & pass dots in to animate
+                            tweenDots(dots[i], numberPixelCoordinates[i], '');
+                        }
+                        
+                        // Break number apart
+                        if (countdownRunning && countdownFrom > 0) {
+                            setTimeout(function() {
+                                breakNumber();
+                            }, countdownTimer);
+                        }
+                    }
+
+                    function breakNumber() {
+                        
+                            for (var i = 0; i < numberPixelCoordinates.length; i++) {
+                                tweenDots(dots[i], '', 'space');	
+                            }
+                        
+                            if (countdownRunning) {
+                                // Build next number
+                                setTimeout(function() {
+                                    countdown();
+                                }, countdownTimer);
+                            }
+
+                    }
+
+
+                    /*
+                    Desc: Animate dots
+                    */
+                    function tweenDots(dot, pos, type) {
+                            
+                        // Move dots around canvas randomly
+                        if (type === 'space') {
+                                    
+                            // Tween dot to coordinate to form number
+                            TweenMax.to(dot, (3 + Math.round(Math.random() * 100) / 100), {
+                                x: randomNumber(0, stageWidth),  
+                                y: randomNumber(0, stageHeight),
+                                alpha: 0.3,
+                                ease: Cubic.easeInOut,
+                                onComplete: function() {
+                                    tweenDots(dot, '', 'space');
+                                }
+                            });
+                            
+                        } else {
+                        
+                            // Tween dot to coordinate to form number
+                            TweenMax.to(dot, (1.5 + Math.round(Math.random() * 100) / 100), {
+                                x: (pos.x + numberOffsetX),
+                                y: (pos.y + numberOffsetY),
+                                delay: 0,
+                                alpha: 1,
+                                ease: Cubic.easeInOut,
+                                onComplete: function() {
+                                }
+                            });
+                            
+                        }
+                    }
+
+
+                    /*
+                    Desc: Get a random number
+                    */
+                    function randomNumber(min, max) {
+                        return Math.floor(Math.random() * (max - min) + min);
+                    }
+        }
+
+
+        function initFramework() {
+            var c = document.getElementById("canvas-wish");
+            var w = c.width = window.innerWidth,
+    h = c.height = window.innerHeight,
+    ctx = c.getContext( '2d' );
+    
+    hw = w / 2, // half-width
+    hh = h / 3.5,
+    
+    opts = {
+      strings: [ 'HAPPY', 'BIRTHDAY!','Jeeva' ],
+      charSize: 32,
+      charSpacing: 40,
+      lineHeight: 45,
+      
+      cx: w / 2,
+      cy: h / 3.5,
+      
+      fireworkPrevPoints: 10,
+      fireworkBaseLineWidth: 5,
+      fireworkAddedLineWidth: 8,
+      fireworkSpawnTime: 200,
+      fireworkBaseReachTime: 30,
+      fireworkAddedReachTime: 30,
+      fireworkCircleBaseSize: 20,
+      fireworkCircleAddedSize: 10,
+      fireworkCircleBaseTime: 30,
+      fireworkCircleAddedTime: 30,
+      fireworkCircleFadeBaseTime: 10,
+      fireworkCircleFadeAddedTime: 5,
+      fireworkBaseShards: 5,
+      fireworkAddedShards: 5,
+      fireworkShardPrevPoints: 3,
+      fireworkShardBaseVel: 4,
+      fireworkShardAddedVel: 2,
+      fireworkShardBaseSize: 3,
+      fireworkShardAddedSize: 3,
+      gravity: .1,
+      upFlow: -.1,
+      letterContemplatingWaitTime: 360,
+      balloonSpawnTime: 20,
+      balloonBaseInflateTime: 10,
+      balloonAddedInflateTime: 10,
+      balloonBaseSize: 20,
+      balloonAddedSize: 20,
+      balloonBaseVel: .4,
+      balloonAddedVel: .4,
+      balloonBaseRadian: -( Math.PI / 2 - .5 ),
+      balloonAddedRadian: -1,
+    },
+    calc = {
+      totalWidth: opts.charSpacing * Math.max( opts.strings[0].length, opts.strings[1].length )
+    },
+    
+    Tau = Math.PI * 2,
+    TauQuarter = Tau / 4,
+    
+    letters = [];
+
+ctx.font = opts.charSize + 'px Verdana';
+
+function Letter( char, x, y ){
+  this.char = char;
+  this.x = x;
+  this.y = y;
+  
+  this.dx = -ctx.measureText( char ).width / 2;
+  this.dy = +opts.charSize / 2;
+  
+  this.fireworkDy = this.y - hh;
+  
+  var hue = x / calc.totalWidth * 360;
+  
+  this.color = 'hsl(hue,80%,50%)'.replace( 'hue', hue );
+  this.lightAlphaColor = 'hsla(hue,80%,light%,alp)'.replace( 'hue', hue );
+  this.lightColor = 'hsl(hue,80%,light%)'.replace( 'hue', hue );
+  this.alphaColor = 'hsla(hue,80%,50%,alp)'.replace( 'hue', hue );
+  
+  this.reset();
+}
+Letter.prototype.reset = function(){
+  
+  this.phase = 'firework';
+  this.tick = 0;
+  this.spawned = false;
+  this.spawningTime = opts.fireworkSpawnTime * Math.random() |0;
+  this.reachTime = opts.fireworkBaseReachTime + opts.fireworkAddedReachTime * Math.random() |0;
+  this.lineWidth = opts.fireworkBaseLineWidth + opts.fireworkAddedLineWidth * Math.random();
+  this.prevPoints = [ [ 0, hh, 0 ] ];
+}
+Letter.prototype.step = function(){
+  
+  if( this.phase === 'firework' ){
+    
+    if( !this.spawned ){
+      
+      ++this.tick;
+      if( this.tick >= this.spawningTime ){
+        
+        this.tick = 0;
+        this.spawned = true;
+      }
+      
+    } else {
+      
+      ++this.tick;
+      
+      var linearProportion = this.tick / this.reachTime,
+          armonicProportion = Math.sin( linearProportion * TauQuarter ),
+          
+          x = linearProportion * this.x,
+          y = hh + armonicProportion * this.fireworkDy;
+      
+      if( this.prevPoints.length > opts.fireworkPrevPoints )
+        this.prevPoints.shift();
+      
+      this.prevPoints.push( [ x, y, linearProportion * this.lineWidth ] );
+      
+      var lineWidthProportion = 1 / ( this.prevPoints.length - 1 );
+      
+      for( var i = 1; i < this.prevPoints.length; ++i ){
+        
+        var point = this.prevPoints[ i ],
+            point2 = this.prevPoints[ i - 1 ];
+          
+        ctx.strokeStyle = this.alphaColor.replace( 'alp', i / this.prevPoints.length );
+        ctx.lineWidth = point[ 2 ] * lineWidthProportion * i;
+        ctx.beginPath();
+        ctx.moveTo( point[ 0 ], point[ 1 ] );
+        ctx.lineTo( point2[ 0 ], point2[ 1 ] );
+        ctx.stroke();
+      
+      }
+      
+      if( this.tick >= this.reachTime ){
+        
+        this.phase = 'contemplate';
+        
+        this.circleFinalSize = opts.fireworkCircleBaseSize + opts.fireworkCircleAddedSize * Math.random();
+        this.circleCompleteTime = opts.fireworkCircleBaseTime + opts.fireworkCircleAddedTime * Math.random() |0;
+        this.circleCreating = true;
+        this.circleFading = false;
+        
+        this.circleFadeTime = opts.fireworkCircleFadeBaseTime + opts.fireworkCircleFadeAddedTime * Math.random() |0;
+        this.tick = 0;
+        this.tick2 = 0;
+        
+        this.shards = [];
+        
+        var shardCount = opts.fireworkBaseShards + opts.fireworkAddedShards * Math.random() |0,
+            angle = Tau / shardCount,
+            cos = Math.cos( angle ),
+            sin = Math.sin( angle ),
+            
+            x = 1,
+            y = 0;
+        
+        for( var i = 0; i < shardCount; ++i ){
+          var x1 = x;
+          x = x * cos - y * sin;
+          y = y * cos + x1 * sin;
+          
+          this.shards.push( new Shard( this.x, this.y, x, y, this.alphaColor ) );
+        }
+      }
+      
+    }
+  } else if( this.phase === 'contemplate' ){
+    
+    ++this.tick;
+    
+    if( this.circleCreating ){
+      
+      ++this.tick2;
+      var proportion = this.tick2 / this.circleCompleteTime,
+          armonic = -Math.cos( proportion * Math.PI ) / 2 + .5;
+      
+      ctx.beginPath();
+      ctx.fillStyle = this.lightAlphaColor.replace( 'light', 50 + 50 * proportion ).replace( 'alp', proportion );
+      ctx.beginPath();
+      ctx.arc( this.x, this.y, armonic * this.circleFinalSize, 0, Tau );
+      ctx.fill();
+      
+      if( this.tick2 > this.circleCompleteTime ){
+        this.tick2 = 0;
+        this.circleCreating = false;
+        this.circleFading = true;
+      }
+    } else if( this.circleFading ){
+    
+      ctx.fillStyle = this.lightColor.replace( 'light', 70 );
+      ctx.fillText( this.char, this.x + this.dx, this.y + this.dy );
+      
+      ++this.tick2;
+      var proportion = this.tick2 / this.circleFadeTime,
+          armonic = -Math.cos( proportion * Math.PI ) / 2 + .5;
+      
+      ctx.beginPath();
+      ctx.fillStyle = this.lightAlphaColor.replace( 'light', 100 ).replace( 'alp', 1 - armonic );
+      ctx.arc( this.x, this.y, this.circleFinalSize, 0, Tau );
+      ctx.fill();
+      
+      if( this.tick2 >= this.circleFadeTime )
+        this.circleFading = false;
+      
+    } else {
+      
+      ctx.fillStyle = this.lightColor.replace( 'light', 70 );
+      ctx.fillText( this.char, this.x + this.dx, this.y + this.dy );
+    }
+    
+    for( var i = 0; i < this.shards.length; ++i ){
+      
+      this.shards[ i ].step();
+      
+      if( !this.shards[ i ].alive ){
+        this.shards.splice( i, 1 );
+        --i;
+      }
+    }
+    
+    if( this.tick > opts.letterContemplatingWaitTime ){
+      
+      this.phase = 'balloon';
+      
+      this.tick = 0;
+      this.spawning = true;
+      this.spawnTime = opts.balloonSpawnTime * Math.random() |0;
+      this.inflating = false;
+      this.inflateTime = opts.balloonBaseInflateTime + opts.balloonAddedInflateTime * Math.random() |0;
+      this.size = opts.balloonBaseSize + opts.balloonAddedSize * Math.random() |0;
+      
+      var rad = opts.balloonBaseRadian + opts.balloonAddedRadian * Math.random(),
+          vel = opts.balloonBaseVel + opts.balloonAddedVel * Math.random();
+      
+      this.vx = Math.cos( rad ) * vel;
+      this.vy = Math.sin( rad ) * vel;
+    }
+  } else if( this.phase === 'balloon' ){
+      
+    ctx.strokeStyle = this.lightColor.replace( 'light', 80 );
+    
+    if( this.spawning ){
+      
+      ++this.tick;
+      ctx.fillStyle = this.lightColor.replace( 'light', 70 );
+      ctx.fillText( this.char, this.x + this.dx, this.y + this.dy );
+      
+      if( this.tick >= this.spawnTime ){
+        this.tick = 0;
+        this.spawning = false;
+        this.inflating = true;  
+      }
+    } else if( this.inflating ){
+      
+      ++this.tick;
+      
+      var proportion = this.tick / this.inflateTime,
+          x = this.cx = this.x,
+          y = this.cy = this.y - this.size * proportion;
+      
+      ctx.fillStyle = this.alphaColor.replace( 'alp', proportion );
+      ctx.beginPath();
+      generateBalloonPath( x, y, this.size * proportion );
+      ctx.fill();
+      
+      ctx.beginPath();
+      ctx.moveTo( x, y );
+      ctx.lineTo( x, this.y );
+      ctx.stroke();
+      
+      ctx.fillStyle = this.lightColor.replace( 'light', 70 );
+      ctx.fillText( this.char, this.x + this.dx, this.y + this.dy );
+      
+      if( this.tick >= this.inflateTime ){
+        this.tick = 0;
+        this.inflating = false;
+      }
+      
+    } else {
+      
+      this.cx += this.vx;
+      this.cy += this.vy += opts.upFlow;
+      
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      generateBalloonPath( this.cx, this.cy, this.size );
+      ctx.fill();
+      
+      ctx.beginPath();
+      ctx.moveTo( this.cx, this.cy );
+      ctx.lineTo( this.cx, this.cy + this.size );
+      ctx.stroke();
+      
+      ctx.fillStyle = this.lightColor.replace( 'light', 70 );
+      ctx.fillText( this.char, this.cx + this.dx, this.cy + this.dy + this.size );
+      
+      if( this.cy + this.size < -hh || this.cx < -hw || this.cy > hw  )
+        this.phase = 'done';
+      
+    }
+  }
+}
+function Shard( x, y, vx, vy, color ){
+  
+  var vel = opts.fireworkShardBaseVel + opts.fireworkShardAddedVel * Math.random();
+  
+  this.vx = vx * vel;
+  this.vy = vy * vel;
+  
+  this.x = x;
+  this.y = y;
+  
+  this.prevPoints = [ [ x, y ] ];
+  this.color = color;
+  
+  this.alive = true;
+  
+  this.size = opts.fireworkShardBaseSize + opts.fireworkShardAddedSize * Math.random();
+}
+Shard.prototype.step = function(){
+  
+  this.x += this.vx;
+  this.y += this.vy += opts.gravity;
+  
+  if( this.prevPoints.length > opts.fireworkShardPrevPoints )
+    this.prevPoints.shift();
+  
+  this.prevPoints.push( [ this.x, this.y ] );
+  
+  var lineWidthProportion = this.size / this.prevPoints.length;
+  
+  for( var k = 0; k < this.prevPoints.length - 1; ++k ){
+    
+    var point = this.prevPoints[ k ],
+        point2 = this.prevPoints[ k + 1 ];
+    
+    ctx.strokeStyle = this.color.replace( 'alp', k / this.prevPoints.length );
+    ctx.lineWidth = k * lineWidthProportion;
+    ctx.beginPath();
+    ctx.moveTo( point[ 0 ], point[ 1 ] );
+    ctx.lineTo( point2[ 0 ], point2[ 1 ] );
+    ctx.stroke();
+    
+  }
+  
+  if( this.prevPoints[ 0 ][ 1 ] > hh )
+    this.alive = false;
+}
+function generateBalloonPath( x, y, size ){
+  
+  ctx.moveTo( x, y );
+  ctx.bezierCurveTo( x - size / 2, y - size / 2,
+                     x - size / 4, y - size,
+                     x,            y - size );
+  ctx.bezierCurveTo( x + size / 4, y - size,
+                     x + size / 2, y - size / 2,
+                     x,            y );
+}
+
+function anim(){
+  
+  window.requestAnimationFrame( anim );
+  
+  ctx.fillStyle = '#18191A';
+  ctx.fillRect( 0, 0, w, h );
+  
+  ctx.translate( hw, hh );
+  
+  var done = true;
+  for( var l = 0; l < letters.length; ++l ){
+    
+    letters[ l ].step();
+    if( letters[ l ].phase !== 'done' )
+      done = false;
+  }
+  
+  ctx.translate( -hw, -hh );
+  
+  if( done )
+    for( var l = 0; l < letters.length; ++l )
+      letters[ l ].reset();
+}
+
+for( var i = 0; i < opts.strings.length; ++i ){
+  for( var j = 0; j < opts.strings[ i ].length; ++j ){
+    letters.push( new Letter( opts.strings[ i ][ j ], 
+                            j * opts.charSpacing + opts.charSpacing / 2 - opts.strings[ i ].length * opts.charSize / 2,
+                            i * opts.lineHeight + opts.lineHeight / 2 - opts.strings.length * opts.lineHeight / 2 ) );
+  }
+}
+
+anim();
+
+window.addEventListener( 'resize', function(){
+  
+  w = c.width = window.innerWidth;
+  h = c.height = window.innerHeight;
+  
+  hw = w / 2;
+  hh = h / 3.5;
+  
+  ctx.font = opts.charSize + 'px Verdana';
+})
+
+
+
+
+        }
+
+    </script>
+</body>
+</html>
+
+
