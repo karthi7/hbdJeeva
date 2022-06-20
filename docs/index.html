@@ -7,6 +7,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/TweenMax.min.js" type="text/javascript"></script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCbjLmu_VwD5PXFPqFJpnzNR7qPMSKIBa8",
+    authDomain: "hbd-hp.firebaseapp.com",
+    databaseURL: "https://hbd-hp.firebaseio.com",
+    projectId: "hbd-hp",
+    storageBucket: "hbd-hp.appspot.com",
+    messagingSenderId: "1026013049734",
+    appId: "1:1026013049734:web:3ccfa3d46863770dc6b207",
+    measurementId: "G-56YQ65NF2W"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  </script>
   <style>
       @import url(https://fonts.googleapis.com/css?family=Lato:900);
 
@@ -64,6 +88,15 @@ p > a:first-of-type {
   min-height: 100%;
 }
 
+#myVideo {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
 
   </style>
 </head>
@@ -73,16 +106,16 @@ p > a:first-of-type {
     <canvas id="canvas-wish"></canvas>
     <canvas id="canvas-dots"></canvas>
 
+   
     <div>
-      <video crossorigin="anonymous" autoplay muted id="myVideo">
-        <source src="./media/video5.mp4" type="video/mp4">
+      <video crossOrigin="anonymous" autoplay muted id="myVideo">
+        <source src="https://karthi7.github.io/hbdJeeva/video/v.mp4" type="video/mp4">
       </video>
     </div>
     
-    
     <script>
-        var audio1 = new Audio('https://github.com/karthi7/hbdJeeva/blob/main/js-cound-down/hbd1.mp3');
-        var audio2 = new Audio('https://github.com/karthi7/hbdJeeva/blob/main/js-cound-downhbd2.mp3');
+        var audio1 = new Audio('https://karthi7.github.io/hbdJeeva/sounds/hbd1.mp3');
+        var audio2 = new Audio('https://karthi7.github.io/hbdJeeva/sounds/hbd2.mp3');
         document.getElementById('myVideo').addEventListener('ended',myHandler,false);
         function myHandler(e) {
           // What you want to do after the event
@@ -91,6 +124,7 @@ p > a:first-of-type {
           loadAnimation();
         }
         document.addEventListener('DOMContentLoaded', function() {
+          console.log('Video play')
           document.getElementById('myVideo').play();
         });
 
@@ -112,7 +146,7 @@ p > a:first-of-type {
                             stageCenterX = stageWidth/2,
                             stageCenterY = stageHeight/2,
                             
-                            countdownFrom = 2,
+                            countdownFrom = 5,
                             countdownTimer = 2200,
                             countdownRunning = true,
                             
