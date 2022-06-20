@@ -651,8 +651,8 @@ p > a:first-of-type {
                             stageCenterX = stageWidth/2,
                             stageCenterY = stageHeight/2,
                             
-                            countdownFrom = 1,
-                            countdownTimer = 2200,
+                            countdownFrom = 5,
+                            countdownTimer = 2500,
                             countdownRunning = true,
                             
                             number,
@@ -746,7 +746,7 @@ p > a:first-of-type {
                                 startAnim();
                                 setTimeout(time => {
                                   window.parent.postMessage("FrameLoaded", '*');
-                                },3000);
+                                },5000);
                             },2500);
                         }
                         
@@ -1396,7 +1396,7 @@ window.addEventListener( 'resize', function(){
 
         particlesJS("particles-js", {
           particles: {
-              number: { value: 46, density: { enable: true, value_area: 800 } },
+              number: { value: 40, density: { enable: true, value_area: 800 } },
               color: { value: ["#f7b267", "#f79d65", "#f4845f", "#f27059", "#f25c54", "#ffffff", "#cc444b", "#ff6b6b","#e63946" ] },
               shape: {
                 type: "circle",
