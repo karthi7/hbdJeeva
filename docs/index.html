@@ -2,7 +2,7 @@
 <html lang="en" class="no-js">
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<meta name="description" content="A simple slideshow with a diagonal look.">
 		<meta name="keywords" content="slideshow, diagonal, thumbnails, images, front end, javascript, css">
 		<meta name="author" content="Codrops">
@@ -33,7 +33,24 @@ supportsCssVars() || alert("Please view this demo in a modern browser that suppo
 
 
 
-
+<style>.goHomeContainer {
+		position: fixed;
+		display: flex;
+		justify-content: normal;
+		width: 100%;
+		height: 100%;
+		bottom: 0px;
+		left: 0;
+	}
+	.goHomeContainer .title {
+		font-size: 13px;
+		position: fixed;
+		right: 25px;
+		bottom: 10px;
+	}
+	.goHomeContainer img {
+		cursor: pointer;
+	}</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Lato:900);
 
 	  body {
@@ -100,6 +117,425 @@ min-height: 100%;
 
 
 
+<style>.loveImageContainer {
+	display: none;
+    min-width: 980px;
+    width: 50%;
+    height: 775px;
+    margin: auto;
+    flex-flow: row wrap;
+    position: relative;
+    margin-top: 10px;
+	position: fixed;
+	top: 10%;
+}	
+
+.item {
+  flex-basis: calc(100% / 15); /* <-- adjusting for margin */
+}
+
+.loveImageContainer .item > img {
+  width: 100%;
+}
+
+.loveImageContainer .item > .bg-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  border-radius: 50%;
+}
+
+.loveImageContainer .item > .bg-image:hover {
+  transform: scale(1.2);
+  transition: 1s;
+}
+
+@keyframes changewidth {
+  from {
+    transform: scale(0.25);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/*Animation*/
+
+/* ==========================================================================
+Loading Animation System by Neale Van Fleet from Rogue Amoeba
+========================================================================== */
+.animate {
+  animation-duration: 0.75s;
+  animation-duration: 1s; 
+  animation-delay: 0.5s;
+  animation-name: animate-fade;
+  animation-timing-function: cubic-bezier(0.26, 0.53, 0.74, 1.48);
+  animation-fill-mode: backwards;
+}
+
+/* Fade In */
+.animate.fade {
+  animation-name: animate-fade;
+  animation-timing-function: ease;
+}
+@keyframes animate-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Pop In */
+.animate.pop {
+  animation-name: animate-pop;
+}
+@keyframes animate-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
+/* Blur In */
+.animate.blur {
+  animation-name: animate-blur;
+  animation-timing-function: ease;
+}
+@keyframes animate-blur {
+  0% {
+    opacity: 0;
+    filter: blur(15px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* Glow In */
+.animate.glow {
+  animation-name: animate-glow;
+  animation-timing-function: ease;
+}
+@keyframes animate-glow {
+  0% {
+    opacity: 0;
+    filter: brightness(3) saturate(3);
+    transform: scale(0.8, 0.8);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) saturate(1);
+    transform: scale(1, 1);
+  }
+}
+
+/* Grow In */
+.animate.grow {
+  animation-name: animate-grow;
+}
+@keyframes animate-grow {
+  0% {
+    opacity: 0;
+    transform: scale(1, 0);
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
+/* Splat In */
+.animate.splat {
+  animation-name: animate-splat;
+}
+
+@keyframes animate-splat {
+  0% {
+    opacity: 0;
+    transform: scale(0, 0) rotate(20deg) translate(0, -30px);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.1, 1.1) rotate(15deg);
+  }
+
+  85% {
+    opacity: 1;
+    transform: scale(1.1, 1.1) rotate(15deg) translate(0, -10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1, 1) rotate(0) translate(0, 0);
+  }
+}
+
+/* Roll In */
+.animate.roll {
+  animation-name: animate-roll;
+}
+@keyframes animate-roll {
+  0% {
+    opacity: 0;
+    transform: scale(0, 0) rotate(360deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1) rotate(0deg);
+  }
+}
+
+/* Flip In */
+.animate.flip {
+  animation-name: animate-flip;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+@keyframes animate-flip {
+  0% {
+    opacity: 0;
+    transform: rotateX(-120deg) scale(0.9, 0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg) scale(1, 1);
+  }
+}
+
+/* Spin In */
+.animate.spin {
+  animation-name: animate-spin;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+@keyframes animate-spin {
+  0% {
+    opacity: 0;
+    transform: rotateY(-120deg) scale(0.9, 0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1, 1);
+  }
+}
+
+/* Slide In */
+.animate.slide {
+  animation-name: animate-slide;
+}
+@keyframes animate-slide {
+  0% {
+    opacity: 0;
+    transform: translate(0, 20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+/* Drop In */
+.animate.drop {
+  animation-name: animate-drop;
+  animation-timing-function: cubic-bezier(0.77, 0.14, 0.91, 1.25);
+}
+@keyframes animate-drop {
+  0% {
+    opacity: 0;
+    transform: translate(0, -300px) scale(0.9, 1.1);
+  }
+  95% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.9, 1.1);
+  }
+  96% {
+    opacity: 1;
+    transform: translate(10px, 0) scale(1.2, 0.9);
+  }
+  97% {
+    opacity: 1;
+    transform: translate(-10px, 0) scale(1.2, 0.9);
+  }
+  98% {
+    opacity: 1;
+    transform: translate(5px, 0) scale(1.1, 0.9);
+  }
+  99% {
+    opacity: 1;
+    transform: translate(-5px, 0) scale(1.1, 0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+
+/* Animation Delays */
+.delay-1 {
+  animation-delay: 0.5s;
+}
+.delay-2 {
+  animation-delay: 0.7s;
+}
+.delay-3 {
+  animation-delay: 0.9s;
+}
+.delay-4 {
+  animation-delay: 1.1s;
+}
+.delay-5 {
+  animation-delay: 1.3s;
+}
+.delay-6 {
+  animation-delay: 1.5s;
+}
+.delay-7 {
+  animation-delay: 1.7s;
+}
+.delay-8 {
+  animation-delay: 1.9s;
+}
+.delay-9 {
+  animation-delay: 2.1s;
+}
+.delay-10 {
+  animation-delay: 2.3s;
+}
+.delay-11 {
+  animation-delay: 2.5s;
+}
+.delay-12 {
+  animation-delay: 2.7s;
+}
+.delay-13 {
+  animation-delay: 2.9s;
+}
+.delay-14 {
+  animation-delay: 3.1s;
+}
+.delay-15 {
+  animation-delay: 3.3s;
+}
+.delay-16 {
+  animation-delay: 3.5s;
+}
+.delay-17 {
+  animation-delay: 3.7s;
+}
+.delay-18 {
+  animation-delay: 3.9s;
+}
+.delay-19 {
+  animation-delay: 4.1s;
+}
+.delay-20 {
+  animation-delay: 4.3s;
+}
+.delay-21 {
+  animation-delay: 4.5s;
+}
+.delay-22 {
+  animation-delay: 4.7s;
+}
+.delay-23 {
+  animation-delay: 4.9s;
+}
+.delay-24 {
+  animation-delay: 5.1s;
+}
+.delay-25 {
+  animation-delay: 5.3s;
+}
+.delay-26 {
+  animation-delay: 5.5s;
+}
+.delay-27 {
+  animation-delay: 5.7s;
+}
+.delay-28 {
+  animation-delay: 5.9s;
+}
+.delay-29 {
+  animation-delay: 6.1s;
+}
+.delay-30 {
+  animation-delay: 6.3s;
+}
+.delay-31 {
+  animation-delay: 6.5s;
+}
+.delay-32 {
+  animation-delay: 6.7s;
+}
+.delay-33 {
+  animation-delay: 6.9s;
+}
+.delay-34 {
+  animation-delay: 7.1s;
+}
+.delay-35 {
+  animation-delay: 7.3s;
+}
+.delay-36 {
+  animation-delay: 7.5s;
+}
+.delay-37 {
+  animation-delay: 7.7s;
+}
+.delay-38 {
+  animation-delay: 7.9s;
+}
+.delay-39 {
+  animation-delay: 8.1s;
+}
+.delay-40 {
+  animation-delay: 8.3s;
+}
+.delay-41 {
+  animation-delay: 8.5s;
+}
+.delay-42 {
+  animation-delay: 8.7s;
+}
+.delay-43 {
+  animation-delay: 8.9s;
+}
+.delay-44 {
+  animation-delay: 9.1s;
+}
+.delay-45 {
+  animation-delay: 9.3s;
+}
+.delay-46 {
+  animation-delay: 9.6s;
+}
+.delay-47 {
+  animation-delay: 9.7s;
+}
+.delay-48 {
+  animation-delay: 9.9s;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  .animate {
+    animation: none !important;
+  }
+}
+/*Animation*/
+
+.ball {
+  position: absolute;
+  border-radius: 100%;
+  opacity: 0.7;
+}</style>
 
 	<link rel="stylesheet" href="demo1.151408fb.css"></head>
 	<body class="loading">
@@ -201,10 +637,10 @@ min-height: 100%;
 						<span class="slide__title-inner" data-splitting="">Ever</span>
 					</h2>
 				</div>
-				<button class="slides__nav slides__nav--prev">
+				<button id="prevImage" class="slides__nav slides__nav--prev">
 					<svg><path d="M82 10H9" stroke="#fff" stroke-width="2"></path><path d="M10.474 0C7.988 4 4.118 7.422 0 10c4.156 2.539 7.865 6 10.474 10h2.485c-2.608-4-5.744-7.379-9.618-10C7.215 7.34 10.474 4 13 0h-2.526zm6 0C13.987 4 10.116 7.422 6 10c4.156 2.539 7.865 6 10.474 10h2.485c-2.606-4-5.745-7.379-9.617-10C13.214 7.34 16.474 4 19 0h-2.526z" fill="#fff"></path></svg>
 				</button>
-				<button class="slides__nav slides__nav--next">
+				<button id="nextImage" class="slides__nav slides__nav--next">
 					<svg><path d="M0 10h73" stroke="#fff" stroke-width="2"></path><path d="M71.526 0C74.012 4 77.882 7.422 82 10c-4.156 2.539-7.865 6-10.474 10h-2.485c2.608-4 5.744-7.379 9.618-10C74.785 7.34 71.526 4 69 0h2.526zm-6 0C68.013 4 71.884 7.422 76 10c-4.156 2.539-7.865 6-10.474 10H63.04c2.606-4 5.745-7.379 9.617-10C68.786 7.34 65.526 4 63 0h2.526z" fill="#fff"></path></svg>
 				</button>
 			</div>
@@ -214,18 +650,409 @@ min-height: 100%;
 		</svg>
 	</div>
 
+
+	<div class="loveImageContainer">
+		<div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-9" ng-class="delay-9" style="background-image: url(0.8e87a1f0.jpg);"></div>
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-10" ng-class="delay-10" style="background-image: url(1.106c6bd6.jpg);"></div>
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-11" ng-class="delay-11" style="background-image: url(2.adddeb7c.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-15" ng-class="delay-15" style="background-image: url(3.993a564c.jpg);"></div>
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-16" ng-class="delay-16" style="background-image: url(4.d8cb7558.jpg);"></div>
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-17" ng-class="delay-17" style="background-image: url(5.044aff48.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-8" ng-class="delay-8" style="background-image: url(6.9baee97f.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-12" ng-class="delay-12" style="background-image: url(7.db0ddc3c.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-14" ng-class="delay-14" style="background-image: url(8.4d0a6fce.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-18" ng-class="delay-18" style="background-image: url(9.da115fa2.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-7" ng-class="delay-7" style="background-image: url(10.dd8e1232.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-13" ng-class="delay-13" style="background-image: url(11.86e7d40e.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-19" ng-class="delay-19" style="background-image: url(12.144063dc.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-6" ng-class="delay-6" style="background-image: url(13.23fa51b6.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-20" ng-class="delay-20" style="background-image: url(14.425ab510.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-5" ng-class="delay-5" style="background-image: url(15.52943bd2.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-21" ng-class="delay-21" style="background-image: url(16.081fb133.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-4" ng-class="delay-4" style="background-image: url(17.7cccce4d.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-22" ng-class="delay-22" style="background-image: url(18.6bd3ce5f.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-3" ng-class="delay-3" style="background-image: url(19.4e1956fd.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-23" ng-class="delay-23" style="background-image: url(20.5de10e8a.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-2" ng-class="delay-2" style="background-image: url(21.83e97601.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-24" ng-class="delay-24" style="background-image: url(22.7f5b4566.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-1" ng-class="delay-1" style="background-image: url(23.4aaaaf70.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-25" ng-class="delay-25" style="background-image: url(24.a458acac.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip"><div class="bg-image one animate pop delay-0" ng-class="delay-0" style="background-image: url(25.43e83562.jpg);"></div>
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div><div class="item animate flip">
+			
+		  </div>
+			
+		  <div class="goHomeContainer">
+			<h2 class="title" style="font-size:13px;">
+				<img id="goHome" src="home2.1b5d128f.png">
+				<span class="slide__title-inner">JK</span> <span class="slide__title-inner"> Home</span>
+			</h2>
+		  </div>
+		  
+	</div>
+
 	 <script src="demo1.151408fb.js"></script>
 	 <script>var audio1 = new Audio('https://karthi7.github.io/hbdJeeva/sounds/hbd1.mp3');
 var audio2 = new Audio('https://karthi7.github.io/hbdJeeva/sounds/hbd2.mp3');
+var imageCarouselCount = 0;
 document.getElementById('myVideo').addEventListener('ended', myHandler, false);
 
 function myHandler(e) {
   // What you want to do after the event
   document.getElementById('myVideo').style.display = 'none';
-  audio1.play();
+  var resp = audio1.play();
+
+  if (resp !== undefined) {
+    resp.then(_ => {
+      // autoplay starts!
+      audio1.play();
+    }).catch(error => {//show error
+    });
+  }
+
   loadAnimation();
 }
 
+document.getElementById('nextImage').addEventListener('click', function () {
+  if (document.getElementsByClassName('slide slide--current')[0].getElementsByTagName('h2')[0].innerText.includes("TOGETHER")) {
+    showLoveImageContainer();
+  }
+});
+document.getElementById('goHome').addEventListener('click', function () {
+  window.parent.postMessage("FrameLoaded", '*');
+});
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Video play'); // setTimeout(time => {
   //   var videoPlay = document.getElementById('myVideo')
@@ -337,16 +1164,26 @@ function loadAnimation() {
       drawNumber('JK');
       setTimeout(time => {
         audio1.pause();
-        audio2.play();
+        var resp = audio2.play();
+
+        if (resp !== undefined) {
+          resp.then(_ => {
+            // autoplay starts!
+            audio2.play();
+          }).catch(error => {//show error
+          });
+        }
+
         initFramework();
         startAnim();
         setTimeout(time => {
           //document.getElementById("canvas-number").getContext('2d').clearRect(0,0,680,420);
           drawNumber("");
           breakNumber();
-          document.querySelector(".message").style.display = 'none';
-          document.getElementById('imageContainer').style.display = 'block';
-          window.parent.postMessage("FrameLoaded", '*');
+          setTimeout(time => {
+            document.querySelector(".message").style.display = 'none';
+            document.getElementById('imageContainer').style.display = 'block';
+          }, 500);
         }, 11500);
       }, 2500);
     } // Decrement number down
@@ -967,6 +1804,320 @@ function startAnim() {
     },
     retina_detect: true
   });
+}
+
+function showLoveImageContainer() {
+  document.getElementById('imageContainer').style.display = 'none';
+  document.getElementsByClassName('loveImageContainer')[0].style.display = 'flex';
+  images = {
+    row: 5,
+    column: 18,
+    total: [{
+      "label": 1
+    }, {
+      "label": 2
+    }, {
+      "label": 3
+    }, {
+      "label": "*",
+      "animation": "delay-4"
+    }, {
+      "label": "*",
+      "animation": "delay-5"
+    }, {
+      "label": 6
+    }, {
+      "label": 7
+    }, {
+      "label": 8
+    }, {
+      "label": "*",
+      "animation": "delay-9"
+    }, {
+      "label": "*",
+      "animation": "delay-10"
+    }, {
+      "label": 11
+    }, {
+      "label": 12
+    }, {
+      "label": 13
+    }, {
+      "label": 14
+    }, {
+      "label": 15
+    }, {
+      "label": "*",
+      "animation": "delay-16"
+    }, {
+      "label": 17
+    }, {
+      "label": 18
+    }, {
+      "label": "*",
+      "animation": "delay-19"
+    }, {
+      "label": 20
+    }, {
+      "label": "*",
+      "animation": "delay-21"
+    }, {
+      "label": 22
+    }, {
+      "label": 23
+    }, {
+      "label": "*",
+      "animation": "delay-24"
+    }, {
+      "label": 25
+    }, {
+      "label": 26
+    }, {
+      "label": 27
+    }, {
+      "label": "*",
+      "animation": "delay-28"
+    }, {
+      "label": 29
+    }, {
+      "label": 30
+    }, {
+      "label": 31
+    }, {
+      "label": 32
+    }, {
+      "label": "*",
+      "animation": "delay-33"
+    }, {
+      "label": 34
+    }, {
+      "label": 35
+    }, {
+      "label": 36
+    }, {
+      "label": 37
+    }, {
+      "label": "*",
+      "animation": "delay-38"
+    }, {
+      "label": 39
+    }, {
+      "label": 40
+    }, {
+      "label": "*",
+      "animation": "delay-41"
+    }, {
+      "label": 42
+    }, {
+      "label": 43
+    }, {
+      "label": 44
+    }, {
+      "label": 45
+    }, {
+      "label": 46
+    }, {
+      "label": 47
+    }, {
+      "label": 48
+    }, {
+      "label": 49
+    }, {
+      "label": 50
+    }, {
+      "label": "*",
+      "animation": "delay-51"
+    }, {
+      "label": 52
+    }, {
+      "label": 53
+    }, {
+      "label": 54
+    }, {
+      "label": "*",
+      "animation": "delay-55"
+    }, {
+      "label": 56
+    }, {
+      "label": 57
+    }, {
+      "label": 58
+    }, {
+      "label": 59
+    }, {
+      "label": 60
+    }, {
+      "label": 61
+    }, {
+      "label": 62
+    }, {
+      "label": "*",
+      "animation": "delay-63"
+    }, {
+      "label": 64
+    }, {
+      "label": 65
+    }, {
+      "label": 66
+    }, {
+      "label": 67
+    }, {
+      "label": 68
+    }, {
+      "label": "*",
+      "animation": "delay-69"
+    }, {
+      "label": 70
+    }, {
+      "label": 71
+    }, {
+      "label": 72
+    }, {
+      "label": 73
+    }, {
+      "label": 74
+    }, {
+      "label": "*",
+      "animation": "delay-75"
+    }, {
+      "label": 76
+    }, {
+      "label": 77
+    }, {
+      "label": 78
+    }, {
+      "label": 79
+    }, {
+      "label": 80
+    }, {
+      "label": 81
+    }, {
+      "label": 82
+    }, {
+      "label": "*",
+      "animation": "delay-83"
+    }, {
+      "label": 84
+    }, {
+      "label": 85
+    }, {
+      "label": 86
+    }, {
+      "label": "*",
+      "animation": "delay-87"
+    }, {
+      "label": 88
+    }, {
+      "label": 89
+    }, {
+      "label": 90
+    }, {
+      "label": 91
+    }, {
+      "label": 92
+    }, {
+      "label": 93
+    }, {
+      "label": 94
+    }, {
+      "label": 95
+    }, {
+      "label": 96
+    }, {
+      "label": "*",
+      "animation": "delay-97"
+    }, {
+      "label": 98
+    }, {
+      "label": "*",
+      "animation": "delay-99"
+    }, {
+      "label": 100
+    }, {
+      "label": 101
+    }, {
+      "label": 102
+    }, {
+      "label": 103
+    }, {
+      "label": 104
+    }, {
+      "label": 105
+    }, {
+      "label": 106
+    }, {
+      "label": 107
+    }, {
+      "label": 108
+    }, {
+      "label": 109
+    }, {
+      "label": 110
+    }, {
+      "label": "*",
+      "animation": "delay-111"
+    }, {
+      "label": 112
+    }, {
+      "label": 113
+    }, {
+      "label": 114
+    }, {
+      "label": 115
+    }, {
+      "label": 116
+    }, {
+      "label": 117
+    }]
+  };
+
+  function isNumber(item) {
+    return Number.isFinite(item.label);
+  }
+
+  function getClass(item) {
+    return item.animation;
+  }
+
+  function animateParticle() {
+    // Some random colors
+    const colors = ["#3CC157", "#2AA7FF", "#1B1B1B", "#FCBC0F", "#F85F36"];
+    const numBalls = 50;
+    const balls = [];
+
+    for (let i = 0; i < numBalls; i++) {
+      let ball = document.createElement("div");
+      ball.classList.add("ball");
+      ball.style.background = colors[Math.floor(Math.random() * colors.length)];
+      ball.style.left = `${Math.floor(Math.random() * 100)}vw`;
+      ball.style.top = `${Math.floor(Math.random() * 100)}vh`;
+      ball.style.transform = `scale(${Math.random()})`;
+      ball.style.width = `${Math.random()}em`;
+      ball.style.height = ball.style.width;
+      balls.push(ball);
+      document.getElementsByClassName("container")[0].append(ball);
+    } // Keyframes
+
+
+    balls.forEach((el, i, ra) => {
+      let to = {
+        x: Math.random() * (i % 2 === 0 ? -11 : 11),
+        y: Math.random() * 12
+      };
+      let anim = el.animate([{
+        transform: "translate(0, 0)"
+      }, {
+        transform: `translate(${to.x}rem, ${to.y}rem)`
+      }], {
+        duration: (Math.random() + 1) * 2000,
+        // random duration
+        direction: "alternate",
+        fill: "both",
+        iterations: Infinity,
+        easing: "ease-in-out"
+      });
+    });
+  }
 }</script>
 	</body>
 </html>

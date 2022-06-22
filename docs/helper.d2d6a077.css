@@ -505,7 +505,7 @@ background-position: 50% 50%;
 visibility: hidden;
 transform: scale(0);
 transition: all 0.4s ease;
-top: 0;
+top: 50px;
 }
 #particles-js.show {
 visibility: visible;
